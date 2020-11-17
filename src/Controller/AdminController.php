@@ -6,19 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IndexController extends AbstractController
+class AdminController extends AbstractController
 {
     /**
-     * @Route("/", name="index")
+     * @Route("/admin", name="admin.")
      */
     public function index(): Response
     {
-        $userRole = $this->getUser()->getRoles()[0];
-
-        if($userRole === 'ROLE_ADMIN'){
-            return $this->redirectToRoute('admin.');
-        }
-
         return $this->render('index/index.html.twig', [
             'controller_name' => 'IndexController',
         ]);
