@@ -95,9 +95,9 @@ class AppAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             $userRole = $token->getUser()->getRoles()[0];
 
-            if($userRole === 'ROLE_ADMIN'){
+            if ($userRole === 'ROLE_ADMIN') {
                 return new RedirectResponse("admin");
-            }else{
+            } else {
                 return new RedirectResponse($targetPath);
             }
         }

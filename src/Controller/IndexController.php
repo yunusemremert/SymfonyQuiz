@@ -11,7 +11,7 @@ class IndexController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index(): Response
+    public function index(): ?Response
     {
         $userRole = $this->getUser()->getRoles()[0];
 
