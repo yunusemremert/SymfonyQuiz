@@ -12,13 +12,35 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/", name="index", methods={"GET"})
+     * @Route("", name="index", methods={"GET"})
      * @return Response
      */
     public function index(): Response
     {
-        return $this->render('index/index.html.twig', [
+        return $this->render('admin/index.html.twig', [
             'controller_name' => 'IndexController',
         ]);
+    }
+
+    /**
+     * @Route("/product", name="productList")
+     * @return Response
+     */
+    public function productList(): Response
+    {
+        return new Response(
+            '<div class="panel">Product List<div>'
+        );
+    }
+
+    /**
+     * @Route("/order", name="orderList")
+     * @return Response
+     */
+    public function orderList(): Response
+    {
+        return new Response(
+            '<div class="panel">Order List<div>'
+        );
     }
 }
