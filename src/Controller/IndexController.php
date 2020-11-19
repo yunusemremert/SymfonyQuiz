@@ -16,7 +16,7 @@ class IndexController extends AbstractController
         $userRole = $this->getUser()->getRoles()[0];
 
         if($userRole === 'ROLE_ADMIN'){
-            return $this->redirectToRoute('admin.');
+            return $this->redirectToRoute('admin.index');
         }
 
         return $this->render('index/index.html.twig', [
