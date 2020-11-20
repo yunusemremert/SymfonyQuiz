@@ -28,9 +28,9 @@ class AdminController extends AbstractController
      */
     public function productList(): Response
     {
-        return new Response(
-            '<div class="panel">Product List<div>'
-        );
+        return $this->render('admin/products/index.html.twig', [
+            'controller_name' => 'IndexController',
+        ]);
     }
 
     /**
@@ -39,8 +39,8 @@ class AdminController extends AbstractController
      */
     public function orderList(): Response
     {
-        return new Response(
-            '<div class="panel">Order List<div>'
-        );
+        return $this->render('admin/orders/index.html.twig', [
+            'controller_name' => 'IndexController',
+        ]);
     }
 }
