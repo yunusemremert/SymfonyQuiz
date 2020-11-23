@@ -6,4 +6,34 @@
     <h1>All Product List</h1>
     <p>Lorem ipsum..</p>
 
+    <table class="table table-bordered" style="vertical-align: middle;">
+        <thead>
+            <tr>
+                <th class="text-center" width="1%">#</th>
+                <th>Name</th>
+                <th class="text-right">Amount</th>
+                <th width="1%">Quantity</th>
+                <th width="1%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td class="text-center">{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td class="text-right">$ {{ product.amount }}</td>
+                    <td>
+                        <input type="text" class="form-control" />
+                    </td>
+                    <td class="text-center">
+                        <input class="btn btn-success" type="button" value="Add">
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No records found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
