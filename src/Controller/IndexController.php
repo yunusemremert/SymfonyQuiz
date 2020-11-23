@@ -19,7 +19,7 @@ class IndexController extends AbstractController
             return $this->redirectToRoute('admin.index');
         }
 
-        return $this->render('index/index.html.twig', [
+        return $this->render('order/index.html.twig', [
             'controller_name' => 'IndexController',
         ]);
     }
