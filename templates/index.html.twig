@@ -23,10 +23,10 @@
                     <td>{{ product.name }}</td>
                     <td class="text-right">$ {{ product.amount }}</td>
                     <td>
-                        <input type="text" class="form-control" />
+                        <input id="add-basket-product-quantity-{{ product.id }}" type="text" class="form-control" />
                     </td>
                     <td class="text-center">
-                        <input class="btn btn-success" type="button" value="Add">
+                        <input data-product-id="{{ product.id }}" class="btn btn-success add-basket-product-item" type="button" value="Add">
                     </td>
                 </tr>
             {% else %}
@@ -36,4 +36,9 @@
             {% endfor %}
         </tbody>
     </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags("basket") }}
 {% endblock %}

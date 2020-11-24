@@ -35,6 +35,7 @@ class IndexController extends AbstractController
 
     /**
      * @Route("/", name="index")
+     * @return Response
      */
     public function index(): ?Response
     {
@@ -46,7 +47,7 @@ class IndexController extends AbstractController
 
         $products = $this->productRepository->findAll();
 
-        return $this->render('order/index.html.twig', [
+        return $this->render('index.html.twig', [
             'products' => $products
         ]);
     }
