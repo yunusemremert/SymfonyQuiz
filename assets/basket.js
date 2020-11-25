@@ -6,7 +6,7 @@ $(".add-basket-product-item").on("click", function (e){
     const productQuantity = $("#add-basket-product-quantity-"+productId).val();
 
     if (productQuantity === "" || productQuantity === "0") {
-        alert("aa");
+        alert("Number cannot be less than 1.");
     } else {
         $.ajax({
             type : "POST",
@@ -16,8 +16,7 @@ $(".add-basket-product-item").on("click", function (e){
                 "product_quantity" : productQuantity
             }
         }).done(function(data){
-            console.log(data);
-            //alert(data.message);
+            alert(data.message);
         });
     }
 });
