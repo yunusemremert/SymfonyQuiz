@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
+ * @Orm\Table(name="`Order`")
  */
 class Order
 {
