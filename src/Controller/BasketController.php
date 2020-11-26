@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Order;
-use App\Entity\User;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,9 +44,9 @@ class BasketController extends AbstractController
         OrderRepository $orderRepository
     )
     {
-        $this->entityManager = $entityManager;
+        $this->entityManager     = $entityManager;
         $this->productRepository = $productRepository;
-        $this->orderRepository = $orderRepository;
+        $this->orderRepository   = $orderRepository;
     }
 
     /**
@@ -60,7 +59,7 @@ class BasketController extends AbstractController
         if (!$request->isXmlHttpRequest()) {
             return $this->json(
                 array(
-                    "status" => "error",
+                    "status"  => "error",
                     "message" => "Error"
                 ),
                 400
@@ -68,34 +67,39 @@ class BasketController extends AbstractController
         }
 
         if (isset($request->request)) {
-            $productId = $request->request->get("product_id");
+            $productId       = $request->request->get("product_id");
             $productQuantity = $request->request->get("product_quantity");
 
-            $product = $this->productRepository->find($productId);
-
-            if (!$product) {
-                return $this->json(
-                    array(
-                        "status" => false,
-                        "message" => "!The product does not exist."
-                    ),
-                    200
-                );
-            }
+            $product      = $this->productRepository->find($productId);
+            $orderProduct = $this->orderRepository->findOneBy([
+                "user_id"    => $this->getUser()->getId(),
+                "product_id" => $productId,
+                "no"         => null
+            ]);
 
             $order = new Order();
-            $order->setUser($this->getUser());
-            $order->setProductId($productId);
-            $order->setQuantity($productQuantity);
-            $order->setAmount($product->getAmount());
-            $order->setCreatedAt(new \DateTime());
 
-            $this->entityManager->persist($order);
+            if ($orderProduct) {
+                $quantity = $orderProduct->getQuantity() + $productQuantity;
+                $amount   = $product->getAmount() * $quantity;
+
+                $orderProduct->setQuantity($quantity);
+                $orderProduct->setAmount($amount);
+            } else {
+                $order->setUser($this->getUser());
+                $order->setProductId($productId);
+                $order->setQuantity($productQuantity);
+                $order->setAmount($product->getAmount() * $productQuantity);
+                $order->setCreatedAt(new \DateTime());
+
+                $this->entityManager->persist($order);
+            }
+
             $this->entityManager->flush();
 
             return $this->json(
                 array(
-                    "status" => true,
+                    "status"  => true,
                     "message" => "!Product add to basket."
                 ),
                 200
@@ -104,7 +108,7 @@ class BasketController extends AbstractController
 
         return $this->json(
             array(
-                "status" => "error",
+                "status"  => "error",
                 "message" => "Error"
             ),
             200

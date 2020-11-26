@@ -24,6 +24,11 @@ class Order
     private $id;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $no;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $user_id;
@@ -161,6 +166,18 @@ class Order
     public function removeProduct(Product $product): self
     {
         $this->products->removeElement($product);
+
+        return $this;
+    }
+
+    public function getNo(): ?string
+    {
+        return $this->no;
+    }
+
+    public function setNo(?string $no): self
+    {
+        $this->no = $no;
 
         return $this;
     }

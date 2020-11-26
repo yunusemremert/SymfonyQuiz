@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Order;
+use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -47,4 +49,16 @@ class OrderRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByOrderProducts($user_id)
+    {
+        return $this->createQueryBuilder('o')
+            ->select('o.id, p.name, p.amount, o.amount total_amount, o.quantity')
+            ->andWhere('o.user_id = :user_id')
+            ->innerJoin(Product::class, 'p', Join::WITH, 'p.id = o.product_id')
+            ->orderBy('o.id', 'DESC')
+            ->setParameter('user_id', $user_id)
+            ->getQuery()
+            ->getResult();
+    }
 }
