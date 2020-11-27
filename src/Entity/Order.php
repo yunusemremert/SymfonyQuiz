@@ -54,6 +54,16 @@ class Order
     private $created_at;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $adress;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $payment_method;
+
+    /**
      * @ManyToOne(targetEntity="User", inversedBy="orders")
      */
     private $user;
@@ -178,6 +188,30 @@ class Order
     public function setNo(?string $no): self
     {
         $this->no = $no;
+
+        return $this;
+    }
+
+    public function getAdress(): ?string
+    {
+        return $this->adress;
+    }
+
+    public function setAdress(?string $adress): self
+    {
+        $this->adress = $adress;
+
+        return $this;
+    }
+
+    public function getPaymentMethod(): ?string
+    {
+        return $this->payment_method;
+    }
+
+    public function setPaymentMethod(?string $payment_method): self
+    {
+        $this->payment_method = $payment_method;
 
         return $this;
     }

@@ -50,15 +50,30 @@ class OrderRepository extends ServiceEntityRepository
     }
     */
 
-    public function findByOrderProducts($user_id)
+    public function findByOrderProducts($userId)
     {
         return $this->createQueryBuilder('o')
             ->select('o.id, p.name, p.amount, o.amount total_amount, o.quantity')
-            ->andWhere('o.user_id = :user_id')
             ->innerJoin(Product::class, 'p', Join::WITH, 'p.id = o.product_id')
+            ->andWhere('o.user_id = :user_id')
+            ->andWhere('o.no IS NULL')
             ->orderBy('o.id', 'DESC')
-            ->setParameter('user_id', $user_id)
+            ->setParameter('user_id', $userId)
             ->getQuery()
             ->getResult();
+    }
+
+    public function updateByOrder(array $data): void
+    {
+        $this->createQueryBuilder('o')
+            ->update()
+            ->set('o.no', ':no')
+            ->set('o.adress', ':adress')
+            ->set('o.payment_method', ':paymentMethod')
+            ->where('o.user_id=:userId')
+            ->andWhere('o.no IS NULL')
+            ->setParameters($data)
+            ->getQuery()
+            ->execute();
     }
 }

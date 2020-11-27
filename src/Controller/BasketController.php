@@ -8,6 +8,7 @@ use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -113,5 +114,40 @@ class BasketController extends AbstractController
             ),
             200
         );
+    }
+
+    /**
+     * @Route("/buy", name="basket_buy", methods={"POST"})
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws \Exception
+     */
+    public function buy(Request $request): RedirectResponse
+    {
+        $orderaddress       = $request->request->get("address");
+        $orderPaymentMethod = $request->request->get("payment_method");
+
+        if ($this->isCsrfTokenValid('post', $request->request->get('_token')) && $orderaddress != "") {
+            $this->orderRepository->updateByOrder([
+                'no' => md5(sha1(date("YmdHis"))),
+                'adress' => $orderaddress,
+                'paymentMethod' => $orderPaymentMethod,
+                'userId' => $this->getUser()->getId()
+            ]);
+
+            $this->addFlash(
+                'success',
+                '!Your order has been received.'
+            );
+
+            return $this->redirectToRoute('index');
+        } else {
+            $this->addFlash(
+                'alert',
+                '!Please enter the address field.'
+            );
+
+            return $this->redirectToRoute('index.order_cart');
+        }
     }
 }
