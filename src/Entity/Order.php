@@ -69,6 +69,11 @@ class Order
     private $status;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated_at;
+
+    /**
      * @ManyToOne(targetEntity="User", inversedBy="orders")
      */
     private $user;
@@ -229,6 +234,18 @@ class Order
     public function setStatus(int $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    {
+        $this->updated_at = $updated_at;
 
         return $this;
     }

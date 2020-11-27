@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Order;
 use App\Entity\Product;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
@@ -70,10 +71,22 @@ class OrderRepository extends ServiceEntityRepository
             ->set('o.no', ':no')
             ->set('o.adress', ':adress')
             ->set('o.payment_method', ':paymentMethod')
+            ->set('o.updated_at', ':updatedAt')
             ->where('o.user_id=:userId')
             ->andWhere('o.no IS NULL')
             ->setParameters($data)
             ->getQuery()
             ->execute();
+    }
+
+    public function getAllOrders()
+    {
+        return $this->createQueryBuilder('o')
+            ->select('o.id, u.email, o.no, SUM(o.amount) total_amount, o.updated_at, o.status')
+            ->innerJoin(User::class, 'u', Join::WITH, 'u.id = o.user_id')
+            ->addGroupBy('o.no')
+            ->orderBy('o.updated_at', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }

@@ -121,7 +121,6 @@ class BasketController extends AbstractController
      * @Route("/buy", name="basket_buy", methods={"POST"})
      * @param Request $request
      * @return RedirectResponse
-     * @throws \Exception
      */
     public function buy(Request $request): RedirectResponse
     {
@@ -130,10 +129,11 @@ class BasketController extends AbstractController
 
         if ($this->isCsrfTokenValid('post', $request->request->get('_token')) && $orderaddress != "") {
             $this->orderRepository->updateByOrder([
+                'userId' => $this->getUser()->getId(),
                 'no' => md5(sha1(date("YmdHis"))),
                 'adress' => $orderaddress,
                 'paymentMethod' => $orderPaymentMethod,
-                'userId' => $this->getUser()->getId()
+                'updatedAt' => new \DateTime()
             ]);
 
             $this->addFlash(

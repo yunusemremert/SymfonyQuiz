@@ -5,4 +5,43 @@
 {% block body %}
     <h1>Orders <a class="btn btn-warning btn-sm" href="{{ path('admin.index') }}">Dashboard</a></h1>
     <p>Lorem ipsum..</p>
+
+    {% if orders | length > 0 %}
+        <table class="table table-bordered" style="vertical-align: middle;">
+            <thead>
+            <tr>
+                <th class="text-center" width="1%">#</th>
+                <th>Order No</th>
+                <th>User</th>
+                <th class="text-right">Amount</th>
+                <th>Buy Date</th>
+                <th width="1%"></th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for key, order in orders %}
+                    {% set i = key + 1 %}
+                    <tr>
+                        <td>{{ i }}</td>
+                        <td>{{ order.no }}</td>
+                        <td>{{ order.email }}</td>
+                        <td class="text-right">$ {{ order.total_amount }}</td>
+                        <td>{{ order.updated_at|date('d.m.Y H:i') }}</td>
+                        <td>
+                            {% if order.status == 0 %}
+                                <form class="d-inline-block" method="post" action="{{ path("admin.order.approve", { "no": order.no }) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token("approve" ~ order.no) }}">
+                                    <button class="btn btn-success btn-sm">Approve</button>
+                                </form>
+                            {% else %}
+                                <span>Approved</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+
+    {% endif %}
 {% endblock %}
