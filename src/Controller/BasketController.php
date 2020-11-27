@@ -92,6 +92,7 @@ class BasketController extends AbstractController
                 $order->setQuantity($productQuantity);
                 $order->setAmount($product->getAmount() * $productQuantity);
                 $order->setCreatedAt(new \DateTime());
+                $order->setStatus(0);
 
                 $this->entityManager->persist($order);
             }

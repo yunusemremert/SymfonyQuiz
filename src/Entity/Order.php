@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
- * @Orm\Table(name="`Order`")
+ * @Orm\Table(name="`order`")
  */
 class Order
 {
@@ -62,6 +62,11 @@ class Order
      * @ORM\Column(type="string", nullable=true)
      */
     private $payment_method;
+
+    /**
+     * @ORM\Column(type="integer", options={"default" : 0})
+     */
+    private $status;
 
     /**
      * @ManyToOne(targetEntity="User", inversedBy="orders")
@@ -212,6 +217,18 @@ class Order
     public function setPaymentMethod(?string $payment_method): self
     {
         $this->payment_method = $payment_method;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
